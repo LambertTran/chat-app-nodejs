@@ -18,9 +18,38 @@ app.use(express.static(publicPath));
 io.on('connection',(socket) =>{
    console.log('new connection');
 
+   //send back data to client/single connection
+   socket.emit('newMessage', {
+      from:'admin',
+      text:'wellcome to chatRoom',
+      createdAt: new Date().getTime()
+   });
+
+   socket.broadcast.emit('newMessage',{
+      from:'admin',
+      text:'new user join',
+      createdAt: new Date().getTime()
+   });
+
+   socket.on('createMessage', (message) => {
+      console.log('createMessage',message);
+
+      // io.emit('newMessage',{
+      //    from:message.from,
+      //    text:message.text,
+      //    createdAt: new Date().getTime()
+      // });
+
+   });
+
+
+
+
    socket.on('disconnect',(socket) =>{
       console.log('user was disconnected');
-   })
+   });
+
+
 });
 
 server.listen(port,() =>{
