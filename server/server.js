@@ -4,6 +4,7 @@ const path = require('path');
 const http = require('http');
 const socketIO = require('socket.io');
 const port = process.env.PORT || 3000;
+const {generateMessage} = require('./utils/message');
 
 const publicPath = path.join(__dirname,'../public');
 
@@ -19,20 +20,13 @@ io.on('connection',(socket) =>{
    console.log('new connection');
 
    //send back data to client/single connection
-   socket.emit('newMessage', {
-      from:'admin',
-      text:'wellcome to chatRoom',
-      createdAt: new Date().getTime()
-   });
+   socket.emit('newMessage', generateMessage('admin','welcome'));
 
-   socket.broadcast.emit('newMessage',{
-      from:'admin',
-      text:'new user join',
-      createdAt: new Date().getTime()
-   });
+   socket.broadcast.emit('newMessage',generateMessage('admin','new user join'));
 
    socket.on('createMessage', (message) => {
       console.log('createMessage',message);
+      io.emit('newMessage',generateMessage(message.from,message.text));
 
       // io.emit('newMessage',{
       //    from:message.from,
