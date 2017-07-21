@@ -22,22 +22,15 @@ io.on('connection',(socket) =>{
    //send back data to client/single connection
    socket.emit('newMessage', generateMessage('admin','welcome'));
 
+
    socket.broadcast.emit('newMessage',generateMessage('admin','new user join'));
 
    socket.on('createMessage', (message) => {
       console.log('createMessage',message);
       io.emit('newMessage',generateMessage(message.from,message.text));
 
-      // io.emit('newMessage',{
-      //    from:message.from,
-      //    text:message.text,
-      //    createdAt: new Date().getTime()
-      // });
-
+      //callback('This is from server'); //aknowledge
    });
-
-
-
 
    socket.on('disconnect',(socket) =>{
       console.log('user was disconnected');
