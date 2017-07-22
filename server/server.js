@@ -20,10 +20,9 @@ io.on('connection',(socket) =>{
    console.log('new connection');
 
    //send back data to client/single connection
-   socket.emit('newMessage', generateMessage('admin','welcome'));
+   socket.emit('newMessage', generateMessage('Admin','welcome to chat room'));
 
-
-   socket.broadcast.emit('newMessage',generateMessage('admin','new user join'));
+   socket.broadcast.emit('newMessage',generateMessage('Admin','new user join'));
 
    socket.on('createMessage', (message,callback) => {
       console.log('createMessage',message);
